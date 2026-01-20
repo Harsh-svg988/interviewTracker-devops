@@ -31,7 +31,7 @@ jobs:
 
       # 3️⃣ Dependency Vulnerability Scan (SCA)
       - name: OWASP Dependency Check
-        uses: dependency-check/Dependency-Check_Action@v3.0.3
+        uses: dependency-check/Dependency-Check_Action@main
         with:
           project: "interview-tracker"
           path: "."

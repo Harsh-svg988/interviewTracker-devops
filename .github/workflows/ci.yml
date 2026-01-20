@@ -21,6 +21,9 @@ jobs:
           java-version: '17'
           cache: maven
 
+      - name: Run Checkstyle
+        run: mvn checkstyle:check
+
       - name: Run tests
         run: mvn clean test
 

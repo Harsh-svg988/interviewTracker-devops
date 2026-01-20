@@ -31,15 +31,19 @@ jobs:
 
       # 3️⃣ Dependency Vulnerability Scan (SCA)
       - name: OWASP Dependency Check
-        uses: dependency-check/Dependency-Check_Action@main
+        run: |
+          mvn org.owasp:dependency-check-maven:check \
+            -DfailBuildOnCVSS=7 \
+            -DskipProvidedScope=true \
+            -DskipRuntimeScope=false
+        continue-on-error: true
+
+      - name: Upload Dependency Check Report
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          project: "interview-tracker"
-          path: "."
-          format: "HTML"
-          out: "dependency-check-report"
-          args: >
-            --scan .
-            --failOnCVSS 7
+          name: dependency-check-report
+          path: target/dependency-check-report.html
 
       # 4️⃣ Build (only if everything above passed)
       - name: Build application

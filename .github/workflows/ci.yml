@@ -21,11 +21,26 @@ jobs:
           java-version: '17'
           cache: maven
 
+      # 1️⃣ Linting
       - name: Run Checkstyle
         run: mvn checkstyle:check
 
+      # 2️⃣ Unit Tests
       - name: Run tests
         run: mvn clean test
 
+      # 3️⃣ Dependency Vulnerability Scan (SCA)
+      - name: OWASP Dependency Check
+        uses: dependency-check/Dependency-Check_Action@v3.0.3
+        with:
+          project: "interview-tracker"
+          path: "."
+          format: "HTML"
+          out: "dependency-check-report"
+          args: >
+            --scan .
+            --failOnCVSS 7
+
+      # 4️⃣ Build (only if everything above passed)
       - name: Build application
         run: mvn clean package -DskipTests
